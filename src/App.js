@@ -1,7 +1,12 @@
+import { useState } from 'react';
 import { Row,Navbar,Container,Nav,Col } from 'react-bootstrap';
 import './App.css';
+import data from './data.js'
 
 function App() {
+
+  let [shoes,setShoes] = useState(data)
+
   return (
     <div className="App">
       <Navbar bg="dark" variant="dark">
@@ -17,25 +22,27 @@ function App() {
       <div className='main-bg'></div>
       <Container>
         <Row>
-          <Col>
-            <img src='https://codingapple1.github.io/shop/shoes1.jpg' width="80%"/>
-            <h4>상품명</h4>
-            <p>상품설명</p>
-          </Col>
-          <Col>
-            <img src='https://codingapple1.github.io/shop/shoes2.jpg' width="80%"/>
-            <h4>상품명</h4>
-            <p>상품설명</p>
-          </Col>
-          <Col>
-            <img src='https://codingapple1.github.io/shop/shoes3.jpg' width="80%"/>
-            <h4>상품명</h4>
-            <p>상품설명</p>
-          </Col>
+          {
+            shoes.map((x,i)=>{
+              return (
+                <Card key = { i } shoes={ x }/>
+              )
+            })
+          }
         </Row>
       </Container>
     </div>
   );
 }
 
+
+function Card(props){
+  return(
+    <Col>
+      <img src={ props.shoes.img } width="80%"/>
+      <h4>{ props.shoes.title }</h4>
+      <p>{ props.shoes.content }</p>
+    </Col>
+  )
+}
 export default App;
