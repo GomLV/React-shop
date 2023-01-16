@@ -6,10 +6,14 @@ import { Routes, Route, useNavigate } from 'react-router-dom'
 import DetailPage from './pages/Detail';
 import MainPage from './pages/Main';
 import { AboutPage, MemberPage, LocationPage } from './pages/About';
+import axios from 'axios';
 
 function App() {
 
   let [shoes,setShoes] = useState(data);
+  let [count,setCount] = useState(2);
+  let [loading,setLoading] = useState(false);
+
   let navigate = useNavigate();
   return (
     <div className="App">
@@ -28,7 +32,39 @@ function App() {
       </Navbar>     
 
       <Routes>
-        <Route path='/' element={ <MainPage shoes={ shoes }/> }/>
+        <Route path='/' element={ 
+          <>
+            <div className='main-bg'></div>
+            <MainPage shoes={ shoes }/>
+            {
+              loading ? <h1>로딩중...</h1> : null
+            }
+            {
+              
+            
+              count>3 ? null :             
+              <button onClick={ ()=>{ 
+                setLoading(true);
+                axios.get('https://codingapple1.github.io/shop/data'+count+'.json')
+                .then((result)=>{ 
+                  var newArr = [...shoes];
+                  newArr.push(...result.data);
+                  setShoes(newArr);
+                  setCount(count+1);
+                  setLoading(false);
+                })
+                .catch(()=>{ 
+                  console.log("요청 실패")
+                  setLoading(false);
+                })
+
+              
+              } }>더보기</button>
+            }
+
+          </>
+        }/>
+        <Route path='/detail' element={ <MainPage shoes={ shoes }/> }/>
         <Route path='/detail/:id' element={ <DetailPage shoes={ shoes }/> }/>
         <Route path='/about' element={ <AboutPage/> }>
           <Route path='member' element={ <MemberPage/> }/>

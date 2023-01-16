@@ -3,20 +3,17 @@ import { Row, Container } from "react-bootstrap";
 
 function MainPage(props){
     return(
-      <>
-        <div className='main-bg'></div>
-        <Container>
-          <Row>
-            {
-              props.shoes.map((x,i)=>{
-                return (
-                  <Card key = { i } shoes={ x }/>
-                )
-              })
-            }
-          </Row>
-        </Container>
-      </>
+      <Container>
+        <Row>
+          {
+            props.shoes.map((x,i)=>{
+              return (
+                <Card i = { i } key = { i } shoes={ x }/>
+              )
+            })
+          }
+        </Row>
+      </Container>
     )
 }
 
