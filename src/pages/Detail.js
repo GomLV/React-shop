@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { Nav } from 'react-bootstrap';
 //import styled from "styled-components";
 
 //styled-components, 이렇게 스타일을 컴포넌트처럼 쓸 수 있음
@@ -14,7 +15,9 @@ let ColorBtn = styled.button`
 function DetailPage(props){
 
 
-  let [alert, setAlert] = useState(true)
+  let [alert, setAlert] = useState(true);
+  let [tab, setTab] = useState(0);
+  let [fade, setFade] = useState('');
   let [validate, setValidate] = useState(true);
   let { id } = useParams();
   var data = props.shoes.find( x => x.id == id );
@@ -28,10 +31,13 @@ function DetailPage(props){
   useEffect(()=>{
     //2초 뒤 실행
     let timer = setTimeout(()=>{ setAlert(false) },2000);
+    let timer2 = setTimeout(()=>{ setFade('end') },10);
     return ()=>{
       //clean up function
       //useEffect 동작 전에 실행
       clearTimeout(timer);
+      clearTimeout(timer2);
+      setFade('');
     }
   },[]);
 
@@ -48,7 +54,7 @@ function DetailPage(props){
     )
   }else{
     return(
-      <div className="container">
+      <div className={ "container start " + fade }>
         {
           alert ?
           <div className="alert alert-warning">
@@ -58,7 +64,7 @@ function DetailPage(props){
         }
         <div className="row">
             <div className="col-md-6">
-              <img src={ data.img } width="100%" />
+              <img src={ "https://codingapple1.github.io/shop/shoes"+(Number(id)+1)+".jpg" } width="100%" />
             </div>
             <div className="col-md-6">
               <h4 className="pt-5">{ data.title }</h4>
@@ -71,9 +77,43 @@ function DetailPage(props){
               <button className="btn btn-danger">주문하기</button> 
             </div>
         </div>
+
+        <Nav variant="tabs" defaultActiveKey="link0">
+          <Nav.Item>
+            <Nav.Link onClick={()=>{setTab(0)}} eventKey="link0">상품정보</Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link onClick={()=>{setTab(1)}} eventKey="link1">리뷰</Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link onClick={()=>{setTab(2)}} eventKey="link2">Q&A</Nav.Link>
+          </Nav.Item>
+        </Nav>
+        <TabContent tab={ tab }/>
       </div> 
     )
   }
+
 }
+
+function TabContent(props){
+
+  let [fade2, setFade2] = useState('');
+
+  useEffect(()=>{
+    let timer = setTimeout(()=>{ setFade2('end') },100);
+    return ()=>{
+      clearTimeout(timer);
+      setFade2('');
+    }
+  },[props.tab]);
+
+  return(
+    <div className={ 'start ' + fade2 }>
+      { [<div>상품정보가 나오는 탭</div>,<div>리뷰가 나오는 탭</div>,<div>Q&A가 나오는 탭</div>][props.tab] }
+    </div>
+  );
+
+} 
 
 export default DetailPage;
