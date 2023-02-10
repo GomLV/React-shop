@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { createContext, useState } from 'react';
 import { Navbar,Container,Nav } from 'react-bootstrap';
 import './App.css';
 import data from './data.js'
@@ -6,6 +6,7 @@ import { Routes, Route, useNavigate } from 'react-router-dom'
 import DetailPage from './pages/Detail';
 import MainPage from './pages/Main';
 import { AboutPage, MemberPage, LocationPage } from './pages/About';
+import Cart from './pages/Cart';
 import axios from 'axios';
 
 function App() {
@@ -71,6 +72,7 @@ function App() {
           <Route path='location' element={ <LocationPage/> }/>
         </Route>
         <Route path='*' element={ <div>잘못된 경로입니다.</div> }/>
+        <Route path='/cart' element={ <Cart/> }/>
       </Routes>
 
 

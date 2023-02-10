@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Nav } from 'react-bootstrap';
 //import styled from "styled-components";
@@ -13,8 +13,6 @@ let ColorBtn = styled.button`
 */
 
 function DetailPage(props){
-
-
   let [alert, setAlert] = useState(true);
   let [tab, setTab] = useState(0);
   let [fade, setFade] = useState('');
