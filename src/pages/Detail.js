@@ -1,6 +1,8 @@
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Nav } from 'react-bootstrap';
+import { useDispatch, useSelector } from "react-redux";
+import { cart_add } from "../store";
 //import styled from "styled-components";
 
 //styled-components, 이렇게 스타일을 컴포넌트처럼 쓸 수 있음
@@ -19,6 +21,8 @@ function DetailPage(props){
   let [validate, setValidate] = useState(true);
   let { id } = useParams();
   var data = props.shoes.find( x => x.id == id );
+  let dispatch = useDispatch();
+  let goods = {id : data.id, name : data.title, count : 1};
 
   /**
    *   mount, update 될때 실행(렌더링 다 되고 나서 실행)
@@ -72,7 +76,7 @@ function DetailPage(props){
               {
                 validate ? <><br/><br/></>: <p style={ {color:"red"} }>숫자만 입력 가능합니다.</p>
               }
-              <button className="btn btn-danger">주문하기</button> 
+              <button className="btn btn-danger" onClick={()=>{ dispatch(cart_add(goods)) }}>주문하기</button> 
             </div>
         </div>
 
