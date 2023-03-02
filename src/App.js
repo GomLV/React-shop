@@ -1,21 +1,38 @@
-import { createContext, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import { Navbar,Container,Nav } from 'react-bootstrap';
 import './App.css';
 import data from './data.js'
 import { Routes, Route, useNavigate } from 'react-router-dom'
 import DetailPage from './pages/Detail';
 import MainPage from './pages/Main';
+import Viewd from './Component/viewd';
 import { AboutPage, MemberPage, LocationPage } from './pages/About';
 import Cart from './pages/Cart';
 import axios from 'axios';
 
 function App() {
 
+  useEffect(()=>{
+    if(!localStorage.getItem('viewd')){
+      localStorage.setItem('viewd',JSON.stringify( [] ))
+    }
+  },[])
+
   let [shoes,setShoes] = useState(data);
   let [count,setCount] = useState(2);
   let [loading,setLoading] = useState(false);
 
   let navigate = useNavigate();
+
+  /**
+   * 로컬 스토리지 사용 예제
+  let obj = { name : 'kim' }
+  localStorage.setItem('data',JSON.stringify(obj))
+  let test = localStorage.getItem('data')
+  console.log(JSON.parse(test))
+   */
+
+
   return (
     <div className="App">
 
@@ -63,11 +80,13 @@ function App() {
               
               } }>더보기</button>
             }
+            
+            <Viewd shoes = { shoes } recent = { JSON.parse(localStorage.getItem('viewd')) }></Viewd>
 
           </>
         }/>
         <Route path='/detail' element={ <MainPage shoes={ shoes }/> }/>
-        <Route path='/detail/:id' element={ <DetailPage shoes={ shoes }/> }/>
+        <Route path='/detail/:id' element={ <DetailPage shoes={ shoes } /> }/>
         <Route path='/about' element={ <AboutPage/> }>
           <Route path='member' element={ <MemberPage/> }/>
           <Route path='location' element={ <LocationPage/> }/>
@@ -79,6 +98,7 @@ function App() {
 
     </div>
   );
+
 }
 
 

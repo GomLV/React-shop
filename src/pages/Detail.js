@@ -31,6 +31,15 @@ function DetailPage(props){
    * -타이머 장착 등 에 사용
    */
   useEffect(()=>{
+
+
+    //최근 본 상품 목록에 현재 상품 추가
+    let viewd = JSON.parse(localStorage.getItem('viewd'))
+    viewd.push(data.id)
+    viewd = new Set(viewd)
+    viewd = Array.from(viewd)
+    localStorage.setItem('viewd',JSON.stringify(viewd))
+
     //2초 뒤 실행
     let timer = setTimeout(()=>{ setAlert(false) },2000);
     let timer2 = setTimeout(()=>{ setFade('end') },10);
